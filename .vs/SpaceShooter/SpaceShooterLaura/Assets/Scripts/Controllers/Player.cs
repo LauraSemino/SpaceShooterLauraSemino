@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Codice.Client.Common.GameUI;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,13 +17,21 @@ public class Player : MonoBehaviour
     public float timeToReachSpeed = 0.5f;
     public float targetSpeed = 5f;
     public float friction = 0.02f;
-   
+
+    private float shieldRadius;
+    private Vector3 enemyDistance;
+    public List<float> circPointAngles;
+
     private void Start()
     {
         acceleration = targetSpeed / timeToReachSpeed;
+        shieldRadius = 1.5f;
+
     }
     void Update()
     {
+
+
 
         // transform.position += velocity;
          if (velocity.x >= targetSpeed)
@@ -44,6 +53,33 @@ public class Player : MonoBehaviour
 
         ApplyFriction();
         playerMovement();
+        enemyDetector();
+    }
+    public void enemyDetector()
+    {
+        Color lineColor;
+        if (enemyDistance.magnitude < shieldRadius)
+        {
+             lineColor = Color.red;     
+        }
+        else
+        {
+            lineColor = Color.green;
+        }
+        Vector3 playerPos = transform.position;
+        for (int i = 0; i < circPointAngles.Count - 1; i++)
+        {
+            Vector3 startPoint;
+            Vector3 endPoint;
+            startPoint = new Vector3(Mathf.Cos(circPointAngles[i] * Mathf.Deg2Rad) * shieldRadius, Mathf.Sin(circPointAngles[i] * Mathf.Deg2Rad) * shieldRadius) + playerPos;
+            endPoint = new Vector3(Mathf.Cos(circPointAngles[i+1] * Mathf.Deg2Rad) * shieldRadius, Mathf.Sin(circPointAngles[i+1] * Mathf.Deg2Rad) * shieldRadius) + playerPos;
+            Debug.DrawLine(startPoint, endPoint, lineColor);
+        }
+        enemyDistance = new Vector3(enemyTransform.position.x - playerPos.x,enemyTransform.position.y - playerPos.y);
+        Debug.DrawLine(playerPos, enemyTransform.position, Color.yellow);
+       
+
+
     }
     public void playerMovement()
     {
