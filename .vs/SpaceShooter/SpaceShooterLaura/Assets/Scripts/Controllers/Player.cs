@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public Transform enemyTransform;
     public GameObject bombPrefab;
     public Transform bombsTransform;
+    public GameObject powerupPrefab;
     private Vector3 Xvelocity = Vector3.right * 0.01f;
     private Vector3 Yvelocity = Vector3.up * 0.01f;
 
@@ -54,6 +55,11 @@ public class Player : MonoBehaviour
         ApplyFriction();
         playerMovement();
         enemyDetector();
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            spawnPowerups();
+        }
+        
     }
     public void enemyDetector()
     {
@@ -73,13 +79,25 @@ public class Player : MonoBehaviour
             Vector3 endPoint;
             startPoint = new Vector3(Mathf.Cos(circPointAngles[i] * Mathf.Deg2Rad) * shieldRadius, Mathf.Sin(circPointAngles[i] * Mathf.Deg2Rad) * shieldRadius) + playerPos;
             endPoint = new Vector3(Mathf.Cos(circPointAngles[i+1] * Mathf.Deg2Rad) * shieldRadius, Mathf.Sin(circPointAngles[i+1] * Mathf.Deg2Rad) * shieldRadius) + playerPos;
-            Debug.DrawLine(startPoint, endPoint, lineColor);
+           // Debug.DrawLine(startPoint, endPoint, lineColor);
         }
         enemyDistance = new Vector3(enemyTransform.position.x - playerPos.x,enemyTransform.position.y - playerPos.y);
-        Debug.DrawLine(playerPos, enemyTransform.position, Color.yellow);
+        //Debug.DrawLine(playerPos, enemyTransform.position, Color.yellow);
        
 
 
+    }
+    public void spawnPowerups()
+    {
+        Vector3 playerPos = transform.position;
+        for (int i = 0; i < circPointAngles.Count - 1; i++)
+        {
+            Vector3 spawnPoint;
+            //Vector3 endPoint;
+            spawnPoint = new Vector3(Mathf.Cos(circPointAngles[i] * Mathf.Deg2Rad) * shieldRadius, Mathf.Sin(circPointAngles[i] * Mathf.Deg2Rad) * shieldRadius) + playerPos;
+            //endPoint = new Vector3(Mathf.Cos(circPointAngles[i+1] * Mathf.Deg2Rad) * shieldRadius, Mathf.Sin(circPointAngles[i+1] * Mathf.Deg2Rad) * shieldRadius) + playerPos;
+            Instantiate(powerupPrefab, spawnPoint, Quaternion.identity);
+        }
     }
     public void playerMovement()
     {
