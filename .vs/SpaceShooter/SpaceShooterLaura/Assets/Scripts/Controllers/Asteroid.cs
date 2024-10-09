@@ -14,16 +14,16 @@ public class Asteroid : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        direction = transform.position;
+        //direction = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(transform.position.x <= direction.x + arrivalDistance && transform.position.x >= direction.x - arrivalDistance && transform.position.y <= direction.y + arrivalDistance && transform.position.y >= direction.y - arrivalDistance)
-        {
-            direction = new Vector3(transform.position.x + Random.Range(-1, maxFloatDistance), transform.position.x + Random.Range(-1, maxFloatDistance));
-        }
+       // if(transform.position.x <= direction.x + arrivalDistance && transform.position.x >= direction.x - arrivalDistance && transform.position.y <= direction.y + arrivalDistance && transform.position.y >= direction.y - arrivalDistance)
+       // {
+       //     direction = new Vector3(transform.position.x + Random.Range(-1, maxFloatDistance), transform.position.x + Random.Range(-1, maxFloatDistance));
+       // }
         velocity += moveSpeed * direction * Time.deltaTime;
         transform.position += velocity * Time.deltaTime;
     }

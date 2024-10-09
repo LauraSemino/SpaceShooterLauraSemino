@@ -163,4 +163,17 @@ public class Player : MonoBehaviour
             velocity.x = -(1.1f* + velocity.x);
         }
     }
+
+    public void HomingMissles()
+    {
+
+    }
+    public void Dash()
+    {
+
+    }
+    public void TractorBeam()
+    {
+        //Use code from VisionCone to find the area to check, and have it affect the transforms/velcoties of the asteroids
+    }
 }
