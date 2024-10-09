@@ -166,11 +166,11 @@ public class Player : MonoBehaviour
 
     public void HomingMissles()
     {
-
+        //create a new prefab of a missle. in the missle class have its destination be the enemy.
     }
     public void Dash()
     {
-
+        //Save the player's prev velocity, then increase it a lot for a little bit, then set it back to what it was before
     }
     public void TractorBeam()
     {
