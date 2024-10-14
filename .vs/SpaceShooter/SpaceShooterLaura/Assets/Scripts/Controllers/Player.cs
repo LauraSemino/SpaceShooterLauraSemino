@@ -10,6 +10,9 @@ public class Player : MonoBehaviour
     public GameObject bombPrefab;
     public Transform bombsTransform;
     public GameObject powerupPrefab;
+    public Transform missleTransform;
+    public GameObject misslePrefab;
+
     private Vector3 Xvelocity = Vector3.right * 0.01f;
     private Vector3 Yvelocity = Vector3.up * 0.01f;
 
@@ -66,6 +69,10 @@ public class Player : MonoBehaviour
         {
             spawnPowerups();
         }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            spawnMissles();
+        }
         
     }
     public void enemyDetector()
@@ -105,6 +112,14 @@ public class Player : MonoBehaviour
             //endPoint = new Vector3(Mathf.Cos(circPointAngles[i+1] * Mathf.Deg2Rad) * shieldRadius, Mathf.Sin(circPointAngles[i+1] * Mathf.Deg2Rad) * shieldRadius) + playerPos;
             Instantiate(powerupPrefab, spawnPoint, Quaternion.identity);
         }
+    }
+    public void spawnMissles()
+    {
+        Vector3 playerPos = transform.position;
+        Vector3 spawnPoint = new Vector3(playerPos.x, playerPos.y + 0.5f);
+        Instantiate(misslePrefab, spawnPoint, Quaternion.identity);
+
+
     }
     public void playerMovement()
     {
