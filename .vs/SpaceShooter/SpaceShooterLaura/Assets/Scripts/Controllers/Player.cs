@@ -13,11 +13,15 @@ public class Player : MonoBehaviour
     private Vector3 Xvelocity = Vector3.right * 0.01f;
     private Vector3 Yvelocity = Vector3.up * 0.01f;
 
+
     public Vector3 velocity = Vector3.zero;
     public float acceleration = 2f;
     public float timeToReachSpeed = 0.5f;
     public float targetSpeed = 5f;
     public float friction = 0.02f;
+
+    public float dashtimer;
+
 
     private float shieldRadius;
     private Vector3 enemyDistance;
@@ -27,11 +31,12 @@ public class Player : MonoBehaviour
     {
         acceleration = targetSpeed / timeToReachSpeed;
         shieldRadius = 1.5f;
+        dashtimer = 0.5f;
 
     }
     void Update()
     {
-
+        
 
 
         // transform.position += velocity;
@@ -51,6 +56,8 @@ public class Player : MonoBehaviour
          {
              velocity.y = -targetSpeed;
          }
+
+        
 
         ApplyFriction();
         playerMovement();
@@ -102,25 +109,61 @@ public class Player : MonoBehaviour
     public void playerMovement()
     {
         
+        if (dashtimer < 0.5f)
+        {
+            targetSpeed = 25;
+            timeToReachSpeed = 0f;
+            dashtimer += 1 * Time.deltaTime;
+        }
+        else if( dashtimer > 0.5f)
+        {
+            targetSpeed = 5;
+            timeToReachSpeed = 0.5f;
+        }
+
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             velocity -= acceleration * transform.right * Time.deltaTime;
-            
+            //dash function 
+            if (Input.GetKeyDown(KeyCode.Space) && dashtimer >= 0.5f)
+            {
+                velocity = new Vector3(-25,0);
+                dashtimer = 0;
+            }
+
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
             velocity += acceleration * transform.right * Time.deltaTime;
-           
+            //dash function 
+            if (Input.GetKeyDown(KeyCode.Space) && dashtimer >= 0.5f)
+            {
+                velocity = new Vector3(25, 0);
+                dashtimer = 0;
+            }
+
         }
         if (Input.GetKey(KeyCode.UpArrow))
         {
             velocity += acceleration * transform.up * Time.deltaTime;
-            
+            //dash function 
+            if (Input.GetKeyDown(KeyCode.Space) && dashtimer >= 0.5f)
+            {
+                velocity = new Vector3(0, 25);
+                dashtimer = 0;
+            }
+
         }
         if (Input.GetKey(KeyCode.DownArrow))
         {
             velocity -= acceleration * transform.up * Time.deltaTime;
-            
+            //dash function 
+            if (Input.GetKeyDown(KeyCode.Space) && dashtimer >= 0.5f)
+            {
+                velocity = new Vector3(0, -25);
+                dashtimer = 0;
+            }
+
         }
         transform.position += velocity * Time.deltaTime;
 
