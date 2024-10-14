@@ -9,7 +9,8 @@ public class Asteroid : MonoBehaviour
     public float maxFloatDistance = 1f;
     public Vector3 direction;
     public Vector3 velocity = Vector3.zero;
-    
+    public float friction = 0.02f;
+
 
     // Start is called before the first frame update
     void Start()
@@ -26,5 +27,25 @@ public class Asteroid : MonoBehaviour
        // }
         velocity += moveSpeed * direction * Time.deltaTime;
         transform.position += velocity * Time.deltaTime;
+
+        if (velocity.y > 0)
+        {
+            velocity.y -= friction * Time.deltaTime;
+        }
+        if (velocity.x > 0)
+        {
+            velocity.x -= friction * Time.deltaTime;
+        }
+        if (velocity.y < 0)
+        {
+            velocity.y += friction * Time.deltaTime;
+        }
+        if (velocity.x < 0)
+        {
+            velocity.x += friction * Time.deltaTime;
+        }
+
     }
+
+
 }

@@ -27,20 +27,22 @@ public class Player : MonoBehaviour
 
 
     private float shieldRadius;
+    private float beamLength;
     private Vector3 enemyDistance;
+    private Vector3 asteroidDistance;
     public List<float> circPointAngles;
 
     private void Start()
     {
         acceleration = targetSpeed / timeToReachSpeed;
         shieldRadius = 1.5f;
+        beamLength = 3;
         dashtimer = 0.5f;
+
 
     }
     void Update()
     {
-        
-
 
         // transform.position += velocity;
          if (velocity.x >= targetSpeed)
@@ -73,6 +75,9 @@ public class Player : MonoBehaviour
         {
             spawnMissles();
         }
+        
+            tractorBeam();
+        
         
     }
     public void enemyDetector()
@@ -118,8 +123,37 @@ public class Player : MonoBehaviour
         Vector3 playerPos = transform.position;
         Vector3 spawnPoint = new Vector3(playerPos.x, playerPos.y + 0.5f);
         Instantiate(misslePrefab, spawnPoint, Quaternion.identity);
-
-
+    }
+    public void tractorBeam()
+    {
+        Color lineColor = Color.blue;
+        for (int i = 0; i < asteroidTransforms.Count - 1; i++)
+        {
+            asteroidDistance = new Vector3(asteroidTransforms[i].position.x - transform.position.x, asteroidTransforms[i].position.y - transform.position.y);
+            if (asteroidDistance.magnitude < beamLength && Input.GetKey(KeyCode.T) && asteroidTransforms[i].position.y > transform.position.y)
+            {
+                asteroidTransforms[i].GetComponent<Asteroid>().direction = transform.position - asteroidTransforms[i].position;
+            }
+            else
+            {
+                asteroidTransforms[i].GetComponent<Asteroid>().direction = new Vector3(0, 0);
+            }
+            
+        }
+        if (Input.GetKey(KeyCode.T))
+        {
+            Vector3 startPoint;
+            Vector3 endPoint;
+            startPoint = new Vector3(Mathf.Cos(60 * Mathf.Deg2Rad) * beamLength, Mathf.Sin(60 * Mathf.Deg2Rad) * beamLength) + transform.position;
+            endPoint = new Vector3(Mathf.Cos(120 * Mathf.Deg2Rad) * beamLength, Mathf.Sin(120 * Mathf.Deg2Rad) * beamLength) + transform.position;
+            Debug.DrawLine(startPoint, endPoint, lineColor);
+            Debug.DrawLine(transform.position, startPoint, lineColor);
+            Debug.DrawLine(transform.position, endPoint, lineColor);
+        }
+        
+        
+        
+        
     }
     public void playerMovement()
     {
@@ -222,16 +256,5 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void HomingMissles()
-    {
-        //create a new prefab of a missle. in the missle class have its destination be the enemy.
-    }
-    public void Dash()
-    {
-        //Save the player's prev velocity, then increase it a lot for a little bit, then set it back to what it was before
-    }
-    public void TractorBeam()
-    {
-        //Use code from VisionCone to find the area to check, and have it affect the transforms/velcoties of the asteroids
-    }
+   
 }
